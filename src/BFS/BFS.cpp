@@ -1,7 +1,8 @@
+#include <cstring>
 #include <iostream>
 #include <queue>
 
-#include "../utils/psvn.h++"
+#include "../utils/psvn.hpp"
 
 using namespace std;
 
@@ -9,18 +10,18 @@ using namespace std;
 Node *breadth_first_search(state_t *initial_state) {
   // initialization
   std::queue<Node *> q;
-  if (initial_state == NULL) {
+  if (initial_state == nullptr) {
     // initial_state = init();
-    return NULL;
+    return nullptr;
   }
   Node *root = make_root_node(initial_state);
   q.push(root);
-
+  int i = 0;
   // search
   while (!q.empty()) {
     Node *node = q.front();
     q.pop();
-    if (is_goal(node->state)) {
+    if (isGoal(node->state)) {
       cout << "Solution found!" << endl;
       return node;
     }
@@ -30,5 +31,5 @@ Node *breadth_first_search(state_t *initial_state) {
       q.push(child);
     }
   }
-  return NULL;  // no solution found
+  return nullptr;  // no solution found
 }

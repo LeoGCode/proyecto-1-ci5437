@@ -1,4 +1,4 @@
-#include "psvn.h++"
+#include "psvn.hpp"
 
 #include <iostream>
 #include <queue>
@@ -19,19 +19,30 @@ Node *make_node(Node *parent, state_t *state, Action action) {
   node->state = state;
   node->parent = parent;
   node->action = action;
-  node->g = parent->g + get_fwd_rule_cost(action);
+  node->g = parent->g + getFwdRuleCost(action);
   return node;
+}
+
+void oprint_state(state_t *state) {
+  char *str_state = new char[256];
+  sprintState(str_state, 256, state);
+  cout << str_state << endl;
 }
 
 vector<pair<state_t *, Action>> *successors(state_t *state) {
   vector<pair<state_t *, Action>> *successors_list =
       new vector<pair<state_t *, Action>>;
-  state_t *child;
-  ruleid_iterator_t *iter;
+  ruleid_iterator_t *iter = new ruleid_iterator_t;
   int move_cost, ruleid;
-  init_fwd_iter(iter, state);
-  while ((ruleid = next_ruleid(iter)) >= 0) {
-    apply_fwd_rule(ruleid, state, child);
+  initFwdIter(iter, state);
+  while ((ruleid = nextRuleid(iter)) >= 0) {
+    state_t *child = (state_t *)(malloc(sizeof(state_t)));
+    if (child == NULL) {
+      fprintf(stderr, "out of memory\n");
+      exit(-1);
+    }
+    applyFwdRule(ruleid, state, child);
+    oprint_state(child);
     // move_cost = get_fwd_rule_cost(ruleid);
     successors_list->push_back(make_pair(child, ruleid));
   }

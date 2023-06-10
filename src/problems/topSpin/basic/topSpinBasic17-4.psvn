@@ -1,0 +1,44 @@
+# This file was created by genTopSpinBasic.cpp with the following command line parameters:
+#  17  4
+
+# number of state variables = the number of tokens
+17
+
+# All state variables have 17 possible values.
+ 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17
+
+X1 X2 X3 X4 -  -  -  -  -  -  -  -  -  -  -  -  -  => X4 X3 X2 X1 -  -  -  -  -  -  -  -  -  -  -  -  -  LABEL RevAt0
+-  X1 X2 X3 X4 -  -  -  -  -  -  -  -  -  -  -  -  => -  X4 X3 X2 X1 -  -  -  -  -  -  -  -  -  -  -  -  LABEL RevAt1
+-  -  X1 X2 X3 X4 -  -  -  -  -  -  -  -  -  -  -  => -  -  X4 X3 X2 X1 -  -  -  -  -  -  -  -  -  -  -  LABEL RevAt2
+-  -  -  X1 X2 X3 X4 -  -  -  -  -  -  -  -  -  -  => -  -  -  X4 X3 X2 X1 -  -  -  -  -  -  -  -  -  -  LABEL RevAt3
+-  -  -  -  X1 X2 X3 X4 -  -  -  -  -  -  -  -  -  => -  -  -  -  X4 X3 X2 X1 -  -  -  -  -  -  -  -  -  LABEL RevAt4
+-  -  -  -  -  X1 X2 X3 X4 -  -  -  -  -  -  -  -  => -  -  -  -  -  X4 X3 X2 X1 -  -  -  -  -  -  -  -  LABEL RevAt5
+-  -  -  -  -  -  X1 X2 X3 X4 -  -  -  -  -  -  -  => -  -  -  -  -  -  X4 X3 X2 X1 -  -  -  -  -  -  -  LABEL RevAt6
+-  -  -  -  -  -  -  X1 X2 X3 X4 -  -  -  -  -  -  => -  -  -  -  -  -  -  X4 X3 X2 X1 -  -  -  -  -  -  LABEL RevAt7
+-  -  -  -  -  -  -  -  X1 X2 X3 X4 -  -  -  -  -  => -  -  -  -  -  -  -  -  X4 X3 X2 X1 -  -  -  -  -  LABEL RevAt8
+-  -  -  -  -  -  -  -  -  X1 X2 X3 X4 -  -  -  -  => -  -  -  -  -  -  -  -  -  X4 X3 X2 X1 -  -  -  -  LABEL RevAt9
+-  -  -  -  -  -  -  -  -  -  X1 X2 X3 X4 -  -  -  => -  -  -  -  -  -  -  -  -  -  X4 X3 X2 X1 -  -  -  LABEL RevAt10
+-  -  -  -  -  -  -  -  -  -  -  X1 X2 X3 X4 -  -  => -  -  -  -  -  -  -  -  -  -  -  X4 X3 X2 X1 -  -  LABEL RevAt11
+-  -  -  -  -  -  -  -  -  -  -  -  X1 X2 X3 X4 -  => -  -  -  -  -  -  -  -  -  -  -  -  X4 X3 X2 X1 -  LABEL RevAt12
+-  -  -  -  -  -  -  -  -  -  -  -  -  X1 X2 X3 X4 => -  -  -  -  -  -  -  -  -  -  -  -  -  X4 X3 X2 X1 LABEL RevAt13
+X4 -  -  -  -  -  -  -  -  -  -  -  -  -  X1 X2 X3 => X1 -  -  -  -  -  -  -  -  -  -  -  -  -  X4 X3 X2 LABEL RevAt14
+X3 X4 -  -  -  -  -  -  -  -  -  -  -  -  -  X1 X2 => X2 X1 -  -  -  -  -  -  -  -  -  -  -  -  -  X4 X3 LABEL RevAt15
+X2 X3 X4 -  -  -  -  -  -  -  -  -  -  -  -  -  X1 => X3 X2 X1 -  -  -  -  -  -  -  -  -  -  -  -  -  X4 LABEL RevAt16
+
+GOAL 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+GOAL 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 0 
+GOAL 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 0 1 
+GOAL 3 4 5 6 7 8 9 10 11 12 13 14 15 16 0 1 2 
+GOAL 4 5 6 7 8 9 10 11 12 13 14 15 16 0 1 2 3 
+GOAL 5 6 7 8 9 10 11 12 13 14 15 16 0 1 2 3 4 
+GOAL 6 7 8 9 10 11 12 13 14 15 16 0 1 2 3 4 5 
+GOAL 7 8 9 10 11 12 13 14 15 16 0 1 2 3 4 5 6 
+GOAL 8 9 10 11 12 13 14 15 16 0 1 2 3 4 5 6 7 
+GOAL 9 10 11 12 13 14 15 16 0 1 2 3 4 5 6 7 8 
+GOAL 10 11 12 13 14 15 16 0 1 2 3 4 5 6 7 8 9 
+GOAL 11 12 13 14 15 16 0 1 2 3 4 5 6 7 8 9 10 
+GOAL 12 13 14 15 16 0 1 2 3 4 5 6 7 8 9 10 11 
+GOAL 13 14 15 16 0 1 2 3 4 5 6 7 8 9 10 11 12 
+GOAL 14 15 16 0 1 2 3 4 5 6 7 8 9 10 11 12 13 
+GOAL 15 16 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 
+GOAL 16 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 

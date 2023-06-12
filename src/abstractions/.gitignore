@@ -1,0 +1,12 @@
+n-puzzle/*/*.psvn
+n-puzzle/*/*.abst
+n-puzzle/*/*.pdb
+rubik/*/*.psvn
+rubik/*/*.abst
+rubik/*/*.pdb
+topSpin/*/*.psvn
+topSpin/*/*.abst
+topSpin/*/*.pdb
+hanoi/*/*.psvn
+hanoi/*/*.abst
+hanoi/*/*.pdb

@@ -15,6 +15,8 @@ if "__main__" == __name__:
         threshold = sys.argv[1]
     else:
         threshold = 30
+        print('No threshold provided, using default value 30, to change it run:')
+        print('python run.py <threshold>')
 
     print(f'Using threshold {threshold}')
 

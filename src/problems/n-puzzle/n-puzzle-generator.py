@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     with open(f'{n}-puzzle.psvn', 'w') as f:
         f.write(f'DOMAIN tile {n+1}\n')
-        f.write(f'       b')
+        f.write(f'       0')
         for i in range(1, n+1):
             f.write(f' {i}')
         f.write('\n\n')
@@ -33,8 +33,8 @@ if __name__ == "__main__":
         # X b - - - - - - - - - - - - - -
         # b is the blank tile, X is a tile number and - is any other tile
         # first we generate all horizontal moves
-        states1 = [f'{i*"- "}b X{(size-2-i)*" -"}' for i in range(size-1)]
-        states2 = [f'{i*"- "}X b{(size-2-i)*" -"}' for i in range(size-1)]
+        states1 = [f'{i*"- "}0 X{(size-2-i)*" -"}' for i in range(size-1)]
+        states2 = [f'{i*"- "}X 0{(size-2-i)*" -"}' for i in range(size-1)]
         empty = (size - 1)*'- ' + '-'
         for base_state1, base_state2 in zip(states1, states2):
             for i in range(size):
@@ -52,9 +52,9 @@ if __name__ == "__main__":
         # X - - - b - - - - - - - - - - -
         # empty_1 = (size - 2)*'- ' + '-'
         states1 = [
-            f'{i*"- "}b{(size-1-i)*" -"} {i*"- "}X{(size-1-i)*" -"}' for i in range(size)]
+            f'{i*"- "}0{(size-1-i)*" -"} {i*"- "}X{(size-1-i)*" -"}' for i in range(size)]
         states2 = [
-            f'{i*"- "}X{(size-1-i)*" -"} {i*"- "}b{(size-1-i)*" -"}' for i in range(size)]
+            f'{i*"- "}X{(size-1-i)*" -"} {i*"- "}0{(size-1-i)*" -"}' for i in range(size)]
         for base_state1, base_state2 in zip(states1, states2):
             for i in range(size-1):
                 tmp_state1 = i*f'{empty} ' + \
@@ -68,6 +68,6 @@ if __name__ == "__main__":
 
         f.write('\n\n')
 
-        f.write(f'GOAL b')
+        f.write(f'GOAL 0')
         for i in range(1, n+1):
             f.write(f' {i}')

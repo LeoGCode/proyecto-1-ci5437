@@ -1,0 +1,19 @@
+cmake_minimum_required(VERSION 3.25)
+project(name)
+
+set(CMAKE_CXX_STANDARD 17 -pthread -O3)
+
+add_executable( name
+        main.cpp
+        problem.c
+        src/search_algorithms/BFS/BFS.cpp
+        src/search_algorithms/BFS/BFS.hpp
+        src/search_algorithms/DFS/DFS.cpp
+        src/search_algorithms/DFS/DFS.hpp
+        src/search_algorithms/IDDFS/IDDFS.cpp
+        src/search_algorithms/IDDFS/IDDFS.hpp
+        src/utils/psvn.cpp
+        src/utils/psvn.hpp
+        problem.cpp
+  )
+

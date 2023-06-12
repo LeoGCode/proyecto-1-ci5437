@@ -3,3 +3,6 @@ build/*
 !build/.gitkeep
 cmake-build-debug
 tmp
+.idea
+psvn
+CMakeLists.txt.user

@@ -11,7 +11,7 @@ results_dir = 'results'
 
 if "__main__" == __name__:
 
-    if len(sys.argv) > 2:
+    if len(sys.argv) >= 2:
         threshold = sys.argv[1]
     else:
         threshold = 30
@@ -45,7 +45,7 @@ if "__main__" == __name__:
                                 f'./bin/{bin_name}/{bin_file} {algo} {line} {threshold}')
 
                             output = subprocess.check_output(
-                                [f'./{bin_dir}/{bin_name}/{bin_file}', algo, line, '30'])
+                                [f'./{bin_dir}/{bin_name}/{bin_file}', algo, line, threshold])
                             # we split the output by new line
                             output = output.decode('utf-8')
                             if re.search(r'Solution found!', output):
@@ -100,7 +100,7 @@ if "__main__" == __name__:
         bin_dt.columns = pd.MultiIndex.from_tuples(
             list(zip(*columns)), names=['pruning', 'algorithm'])
         dataframes.append(bin_dt)
-        bin_dt.to_csv(f'./{results_dir}/{bin_name}.csv')
+        bin_dt.to_csv(f'./{results_dir}/{bin_name}_{threshold}.csv')
         # print(bin_dt)
 
     # we save the dataframes to csv files

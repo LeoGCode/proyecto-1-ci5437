@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <sys/types.h>
 
+#include <iostream>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
@@ -37,6 +39,8 @@ int nextRuleid(ruleid_iterator_t *iter);
 void applyFwdRule(int ruleid, const state_t *state, state_t *child);
 int getFwdRuleCost(int ruleid);
 int isGoal(state_t *state);
+int getFwdRuleCost(int ruleid);
+
 static ssize_t sprintState(char *string, const size_t max_len,
                            const state_t *state_ptr);
 ssize_t readState(const char *string, state_t *state_ptr);
@@ -61,5 +65,20 @@ Node *make_node(Node *parent, state_t *state, Action action);
 vector<pair<state_t *, Action>> *successors(state_t *state);
 
 void oprint_state(state_t *state);
+
+// heuristic function to be used in A* and IDA*
+typedef unsigned (*heuristic_t)(state_t *);
+
+// color embedding
+// 0 - white
+// 1 - gray
+// 2 - black
+int COLOR(char c);
+
+void set_color(state_t *state, int color, unordered_map<string, int> &visited);
+int get_color(state_t *state, unordered_map<string, int> &visited);
+void set_distance(state_t *state, int distance,
+                  unordered_map<string, int> &cost_so_far);
+int get_distance(state_t *state, unordered_map<string, int> &cost_so_far);
 
 #endif  // PSVN_H

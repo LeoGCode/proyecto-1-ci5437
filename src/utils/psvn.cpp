@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <queue>
+#include <unordered_map>
 
 using namespace std;
 
@@ -54,4 +55,35 @@ vector<pair<state_t *, Action>> *successors(state_t *state) {
   }
   free(iter);
   return successors_list;
+}
+
+int COLOR(char c) {
+  if (c == 'w') return 0;
+  if (c == 'g') return 1;
+  if (c == 'b') return 2;
+}
+
+void set_color(state_t *state, int color, unordered_map<string, int> &visited) {
+  char *str_state = new char[1024];
+  sprintState(str_state, 1024, state);
+  visited[string(str_state)] = color;
+}
+
+int get_color(state_t *state, unordered_map<string, int> &visited) {
+  char *str_state = new char[1024];
+  sprintState(str_state, 1024, state);
+  return visited[string(str_state)];
+}
+
+void set_distance(state_t *state, int distance,
+                  unordered_map<string, int> &cost_so_far) {
+  char *str_state = new char[1024];
+  sprintState(str_state, 1024, state);
+  cost_so_far[string(str_state)] = distance;
+}
+
+int get_distance(state_t *state, unordered_map<string, int> &cost_so_far) {
+  char *str_state = new char[1024];
+  sprintState(str_state, 1024, state);
+  return cost_so_far[string(str_state)];
 }

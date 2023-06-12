@@ -9,19 +9,27 @@
 #include "src/search_algorithms/BFS/BFS.hpp"
 #include "src/search_algorithms/DFS/DFS.hpp"
 #include "src/search_algorithms/IDDFS/IDDFS.hpp"
+#include "src/search_algorithms/astar/astar.hpp"
+#include "src/search_algorithms/idastar/idastar.hpp"
 // #include "src/utils/psvn.hpp"
 
+#include "src/problems/n-puzzle/heuristics/manhattan.hpp"
+
 void print_help(char *argv0) {
-  cout << "Usage: " << argv0 << " <algorithm> <instance> <timeout>" << endl;
-  cout << "  <algorithm> = {bfs, dfs, iddfs}"
-       << endl;  //, dfs, iddfs, astar, idastar}" << endl;
+  cout << "Usage: " << argv0 << " <algorithm> <instance> <timeout> [heuristic]"
+       << endl;
+  cout << "  <algorithm> = {bfs, dfs, iddfs, astar, idastar}" << endl;
   cout << "  <instance> = vector of length corresponding to the problem"
        << endl;
   cout << "  <timeout> = timeout in seconds" << endl;
+  cout << "  [heuristic] = {manhattan} (required for astar and idastar)"
+       << endl;
+  cout << "  the heuristic must match the problem" << endl;
 }
 
 void print_short_help(char *argv0) {
-  cout << "Usage: " << argv0 << " <algorithm> <instance> <timeout>" << endl;
+  cout << "Usage: " << argv0 << " <algorithm> <instance> <timeout> [heuristic]"
+       << endl;
   cout << "Please, use -h or --help for more information." << endl;
 }
 
@@ -32,13 +40,27 @@ atomic<bool> main_finished(false);
 // flag to indicate if timeout has been reached
 atomic<bool> timeout_reached(false);
 
+heuristic_t check_heuristic(int argc, char *argv[], char const *heuristic) {
+  if (argc != 5) {
+    print_short_help(argv[0]);
+    return NULL;
+  }
+  if (strcmp(heuristic, "manhattan") == 0) {
+    return manhattan;
+  } else {
+    cout << "Heuristic not implemented." << endl;
+    cout << "Please, use -h or --help for more information." << endl;
+    return NULL;
+  }
+}
+
 int main_program(int argc, char *argv[]) {
   if (argc > 1 &&
       (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0)) {
     print_help(argv[0]);
     return 0;
   }
-  if (argc != 4) {
+  if (argc < 4) {
     print_short_help(argv[0]);
     return 0;
   }
@@ -59,6 +81,20 @@ int main_program(int argc, char *argv[]) {
   } else if (strcmp(algorithm, "iddfs") == 0) {
     iterative_deepening_depth_first_search(initial_state, &num_generated_states,
                                            &num_expanded_states);
+  } else if (strcmp(algorithm, "astar") == 0) {
+    heuristic_t heuristic = check_heuristic(argc, argv, argv[4]);
+    if (heuristic == NULL) {
+      return 0;
+    }
+    astar_search(initial_state, heuristic, &num_generated_states,
+                 &num_expanded_states);
+  } else if (strcmp(algorithm, "idastar") == 0) {
+    heuristic_t heuristic = check_heuristic(argc, argv, argv[4]);
+    if (heuristic == NULL) {
+      return 0;
+    }
+    idastar_search(initial_state, heuristic, &num_generated_states,
+                   &num_expanded_states);
   } else {
     cout << "Algorithm not implemented." << endl;
     cout << "Please, use -h or --help for more information." << endl;
@@ -74,7 +110,7 @@ void wait_timeout(int timeout) {
 }
 
 int main(int argc, char *argv[]) {
-  //  main_program(argc, argv, &main_finished);cl
+    main_program(argc, argv);
 
   // launch the main program in a separate thread
   thread t1(main_program, argc, argv);

@@ -1,9 +1,11 @@
 #ifndef HEURISTIC_H
-#define HEURIS
+#define HEURISTIC_H
 
-#include <vector>
-#include <string>
 #include <algorithm>
+#include <string>
+#include <vector>
+
+#include "psvn.hpp"
 
 /*
 Return de Heuristic Value for a given state in problem
@@ -20,6 +22,6 @@ Problem string posible values:
 - topSpin17-4
 
 */
-int getHeuristic( state_t state, std::string problem );
+int getHeuristic(state_t state, std::string problem);
 
-#endif
+#endif  // HEURISTIC_H

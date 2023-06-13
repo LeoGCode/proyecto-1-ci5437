@@ -12,6 +12,7 @@
 using namespace std;
 
 #define NUMVARS 16
+#define NUMDOMAINS 1
 
 typedef int8_t var_t;
 typedef struct {
@@ -76,8 +77,38 @@ int COLOR(char c);
 
 void set_color(state_t *state, int color, unordered_map<string, int> &visited);
 int get_color(state_t *state, unordered_map<string, int> &visited);
-void set_distance(state_t *state, int distance,
-                  unordered_map<string, int> &cost_so_far);
-int get_distance(state_t *state, unordered_map<string, int> &cost_so_far);
+void set_distance(state_t *state, unsigned distance,
+                  unordered_map<string, unsigned> &cost_so_far);
+unsigned get_distance(state_t *state,
+                      unordered_map<string, unsigned> &cost_so_far);
 
+typedef struct {
+  int size;
+  var_t *v;
+} abst_array_t;
+
+typedef struct {
+  var_t *value_map[NUMDOMAINS];
+  uint8_t project_away_var[NUMVARS];
+  abst_array_t *mapped_in[NUMDOMAINS];
+  int *fwd_rule_label_sets;
+  int *bwd_rule_label_sets;
+} abstraction_t;
+
+typedef struct {
+  state_t state;
+  int value;
+} state_map_entry_t;
+
+typedef struct {
+  state_map_entry_t *entries;
+  int64_t avail_entries;
+  int64_t max_entry;
+} state_map_t;
+
+abstraction_t *readAbstractionFromFile(const char *filename);
+state_map_t *readStateMap(FILE *file);
+void abstractState(const abstraction_t *abst, const state_t *state,
+                   state_t *abst_state);
+int *stateMapGet(const state_map_t *map, const state_t *state);
 #endif  // PSVN_H

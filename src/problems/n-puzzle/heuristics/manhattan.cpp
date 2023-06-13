@@ -4,7 +4,7 @@
 #include <cmath>
 
 unsigned manhattan(state_t *state) {
-  unsigned sum = 0;
+   unsigned sum = 0;
   for (int i = 0; i < NUMVARS; i++) {
     if (state->vars[i] == 0) continue;
     int grid_size = int(sqrt(NUMVARS));

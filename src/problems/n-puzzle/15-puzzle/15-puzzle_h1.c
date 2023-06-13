@@ -12,6 +12,7 @@
 #define psvn2c_PSVN_API
 
 #define HAVE_FWD_MOVE_PRUNING
+#define HAVE_ABSTRACTION
 
 
 /* number of variables in a state */
@@ -24,8 +25,10 @@ typedef int8_t var_t;
 
 #define NUMDOMAINS 1
 static var_t domain_sizes[ NUMDOMAINS ] = { 16 };
+static const char *name_of_domain[ NUMDOMAINS ] = { "TILE" };
 static int var_domains[ NUMVARS ] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 static const char *domain_0[ 16 ] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
+static const char **domain_to_domain_names[ NUMDOMAINS ] = { domain_0 };
 static const char **var_domain_names[ NUMVARS ] = { domain_0, domain_0, domain_0, domain_0, domain_0, domain_0, domain_0, domain_0, domain_0, domain_0, domain_0, domain_0, domain_0, domain_0, domain_0, domain_0 };
 
 typedef struct {
@@ -46,6 +49,8 @@ static const char *fwd_rule_name[ 48 ] = { "rule_1", "rule_2", "rule_3", "rule_4
 #define cost_of_cheapest_fwd_rule 1
 #define cost_of_costliest_fwd_rule 1
 #define get_fwd_rule_cost( ruleid ) 1
+
+static int fwd_rule_label_sets[768] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 
 static int fwd_prune_table[ 2352 ] = { 48, 96, 144, 192, 240, 288, 336, 384, 432, 480, 528, 576, 624, 672, 720, 768, 816, 864, 912, 960, 1008, 1056, 1104, 1152, 1200, 1248, 1296, 1344, 1392, 1440, 1488, 1536, 1584, 1632, 1680, 1728, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 144, 192, 240, 288, 336, 384, 432, 0, 528, 576, 624, 672, 720, 768, 816, 864, 912, 960, 1008, 1056, 1104, 1152, 0, 1248, 1296, 1344, 1392, 1440, 1488, 0, 1584, 1632, 1680, 1728, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 144, 192, 240, 288, 336, 384, 0, 480, 528, 576, 624, 672, 720, 768, 816, 864, 912, 960, 1008, 1056, 1104, 1152, 1200, 0, 1296, 1344, 1392, 1440, 0, 1536, 1584, 1632, 1680, 1728, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 240, 288, 336, 384, 432, 480, 528, 0, 624, 672, 720, 768, 816, 864, 912, 960, 1008, 1056, 1104, 1152, 1200, 0, 0, 1344, 1392, 1440, 0, 1536, 1584, 0, 1680, 1728, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 240, 288, 336, 384, 432, 480, 0, 576, 624, 672, 720, 768, 816, 864, 912, 960, 1008, 1056, 1104, 1152, 0, 1248, 1296, 0, 1392, 1440, 1488, 0, 0, 1632, 1680, 1728, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 336, 384, 432, 480, 528, 576, 624, 0, 720, 768, 816, 864, 912, 960, 1008, 1056, 1104, 1152, 1200, 1248, 1296, 0, 0, 1440, 1488, 1536, 0, 1632, 1680, 0, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 336, 384, 432, 480, 528, 576, 0, 672, 720, 768, 816, 864, 912, 960, 1008, 1056, 1104, 1152, 1200, 1248, 0, 1344, 1392, 0, 1488, 1536, 1584, 0, 0, 1728, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 432, 480, 528, 576, 624, 672, 720, 0, 816, 864, 912, 960, 1008, 1056, 1104, 1152, 1200, 1248, 1296, 1344, 1392, 0, 1488, 1536, 1584, 1632, 0, 1728, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 432, 480, 528, 576, 624, 672, 0, 768, 816, 864, 912, 960, 1008, 1056, 1104, 1152, 1200, 1248, 1296, 1344, 0, 1440, 1488, 1536, 1584, 1632, 1680, 0, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 528, 576, 624, 672, 720, 768, 816, 0, 912, 960, 1008, 1056, 1104, 1152, 1200, 1248, 1296, 1344, 1392, 1440, 0, 1536, 1584, 1632, 1680, 1728, 1776, 0, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 96, 0, 0, 0, 0, 0, 0, 0, 0, 528, 576, 624, 672, 720, 768, 0, 864, 912, 960, 1008, 1056, 1104, 1152, 1200, 1248, 1296, 1344, 1392, 1440, 1488, 0, 1584, 1632, 1680, 1728, 0, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 144, 0, 0, 0, 0, 0, 0, 0, 0, 0, 624, 672, 720, 768, 816, 864, 912, 0, 1008, 1056, 1104, 1152, 1200, 1248, 1296, 1344, 1392, 1440, 1488, 0, 0, 1632, 1680, 1728, 0, 1824, 1872, 0, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 192, 0, 0, 0, 0, 0, 0, 0, 0, 624, 672, 720, 768, 816, 864, 0, 960, 1008, 1056, 1104, 1152, 1200, 1248, 1296, 1344, 1392, 1440, 0, 1536, 1584, 0, 1680, 1728, 1776, 0, 0, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 240, 0, 0, 0, 0, 0, 0, 0, 0, 0, 720, 768, 816, 864, 912, 960, 1008, 0, 1104, 1152, 1200, 1248, 1296, 1344, 1392, 1440, 1488, 1536, 1584, 0, 0, 1728, 1776, 1824, 0, 1920, 1968, 0, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 288, 0, 0, 0, 0, 0, 0, 0, 0, 720, 768, 816, 864, 912, 960, 0, 1056, 1104, 1152, 1200, 1248, 1296, 1344, 1392, 1440, 1488, 1536, 0, 1632, 1680, 0, 1776, 1824, 1872, 0, 0, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 336, 0, 0, 0, 0, 0, 0, 0, 0, 0, 816, 864, 912, 960, 1008, 1056, 1104, 0, 1200, 1248, 1296, 1344, 1392, 1440, 1488, 1536, 1584, 1632, 1680, 0, 1776, 1824, 1872, 1920, 0, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 384, 0, 0, 0, 0, 0, 0, 0, 0, 816, 864, 912, 960, 1008, 1056, 0, 1152, 1200, 1248, 1296, 1344, 1392, 1440, 1488, 1536, 1584, 1632, 0, 1728, 1776, 1824, 1872, 1920, 1968, 0, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 432, 0, 0, 0, 0, 0, 0, 0, 0, 0, 912, 960, 1008, 1056, 1104, 1152, 1200, 1248, 1296, 1344, 1392, 1440, 1488, 1536, 1584, 1632, 1680, 1728, 0, 1824, 1872, 1920, 1968, 2016, 2064, 0, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 0, 480, 0, 0, 0, 0, 0, 0, 0, 0, 912, 960, 1008, 1056, 1104, 1152, 1200, 1248, 1296, 1344, 1392, 1440, 1488, 1536, 1584, 1632, 1680, 1728, 1776, 0, 1872, 1920, 1968, 2016, 0, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 528, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1008, 1056, 1104, 1152, 1200, 1248, 1296, 1344, 1392, 1440, 1488, 1536, 1584, 1632, 1680, 1728, 1776, 0, 0, 1920, 1968, 2016, 0, 2112, 2160, 0, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 576, 0, 0, 0, 0, 0, 0, 0, 0, 1008, 1056, 1104, 1152, 1200, 1248, 1296, 1344, 1392, 1440, 1488, 1536, 1584, 1632, 1680, 1728, 0, 1824, 1872, 0, 1968, 2016, 2064, 0, 0, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 624, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1104, 1152, 1200, 1248, 1296, 1344, 1392, 1440, 1488, 1536, 1584, 1632, 1680, 1728, 1776, 1824, 1872, 0, 0, 2016, 2064, 2112, 0, 2208, 2256, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 672, 0, 0, 0, 0, 0, 0, 0, 0, 1104, 1152, 1200, 1248, 1296, 1344, 1392, 1440, 1488, 1536, 1584, 1632, 1680, 1728, 1776, 1824, 0, 1920, 1968, 0, 2064, 2112, 2160, 0, 0, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 720, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1248, 1296, 1344, 1392, 1440, 1488, 1536, 1584, 1632, 1680, 1728, 1776, 1824, 1872, 1920, 1968, 0, 2064, 2112, 2160, 2208, 0, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 768, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 1248, 1296, 1344, 1392, 1440, 1488, 1536, 1584, 1632, 1680, 1728, 1776, 1824, 1872, 1920, 0, 2016, 2064, 2112, 2160, 2208, 2256, 0, 0, 96, 144, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1296, 0, 1392, 1440, 1488, 1536, 1584, 1632, 1680, 1728, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 48, 0, 0, 192, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1344, 1392, 1440, 1488, 1536, 1584, 1632, 1680, 1728, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 192, 240, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1200, 0, 0, 0, 1392, 0, 1488, 1536, 1584, 1632, 1680, 1728, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 144, 0, 0, 288, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1248, 0, 0, 0, 1440, 1488, 1536, 1584, 1632, 1680, 1728, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 288, 336, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1296, 0, 0, 0, 1488, 1536, 1584, 1632, 1680, 1728, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 240, 0, 0, 384, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1344, 0, 0, 1488, 1536, 1584, 1632, 1680, 1728, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 48, 0, 0, 192, 0, 0, 0, 0, 0, 480, 528, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1584, 0, 1680, 1728, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 96, 144, 0, 0, 0, 0, 0, 432, 0, 0, 576, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1632, 1680, 1728, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 144, 0, 0, 288, 0, 0, 0, 0, 0, 576, 624, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1488, 0, 0, 0, 1680, 0, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 192, 240, 0, 0, 0, 0, 0, 528, 0, 0, 672, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1536, 0, 0, 0, 1728, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 240, 0, 0, 384, 0, 0, 0, 0, 0, 672, 720, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1584, 0, 0, 0, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 288, 336, 0, 0, 0, 0, 0, 624, 0, 0, 768, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1632, 0, 0, 1776, 1824, 1872, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 432, 0, 0, 576, 0, 0, 0, 0, 0, 864, 912, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1872, 0, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 0, 480, 528, 0, 0, 0, 0, 0, 816, 0, 0, 960, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1920, 1968, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 528, 0, 0, 672, 0, 0, 0, 0, 0, 960, 1008, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1776, 0, 0, 0, 1968, 0, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 576, 624, 0, 0, 0, 0, 0, 912, 0, 0, 1056, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1824, 0, 0, 0, 2016, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 624, 0, 0, 768, 0, 0, 0, 0, 0, 1056, 1104, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1872, 0, 0, 0, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 672, 720, 0, 0, 0, 0, 0, 1008, 0, 0, 1152, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1920, 0, 0, 2064, 2112, 2160, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 816, 0, 0, 960, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2160, 0, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 864, 912, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2208, 2256, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 912, 0, 0, 1056, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2064, 0, 0, 0, 2256, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 960, 1008, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2112, 0, 0, 0, 2304, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1008, 0, 0, 1152, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2160, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1056, 1104, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2208, 0, 0 };
 
@@ -1835,3 +1840,467 @@ static uint64_t hash_state( const state_t *state )
 
 
 
+/*
+Copyright (C) 2011, 2014 by the PSVN Research Group, University of Alberta
+*/
+
+
+typedef struct {
+  state_t state;
+  int value;
+} state_map_entry_t;
+
+typedef struct {
+  state_map_entry_t *entries;
+  int64_t avail_entries;
+  int64_t max_entry;
+} state_map_t;
+
+/* create a map of states to values */
+static state_map_t *new_state_map()
+{
+  state_map_t *map;
+  int64_t i;
+  map = (state_map_t *)malloc( sizeof( *map ) );
+  assert( map != 0 );
+  map->max_entry = 1023;
+  map->avail_entries = (float)map->max_entry * 0.75;
+  map->entries = (state_map_entry_t *)malloc( sizeof( map->entries[ 0 ] )
+			 * ( map->max_entry + 1 ) );
+  assert( map->entries != 0 );
+  for( i = 0; i <= map->max_entry; ++i ) {
+    map->entries[ i ].state.vars[ 0 ] = -1;
+  }
+  return map;
+}
+
+/* destroy a state map, freeing all associated memory */
+static void destroy_state_map( state_map_t *map )
+{
+  free( map->entries );
+  free( map );
+}
+
+static int64_t state_map_hash_state( const state_map_t *map,
+				     const state_t *state )
+{
+  uint64_t index, mult;
+
+  index = hash_state( state ) & map->max_entry;
+  mult = 1;
+  while( map->entries[ index ].state.vars[ 0 ] >= 0 ) {
+    if( !compare_states( state, &map->entries[ index ].state ) ) {
+      break;
+    }
+    index = ( index + mult ) & map->max_entry;
+    ++mult;
+  }
+  return index;
+}
+
+/* add state->value to the map.
+   Replaces previous mapping if state is already in the map. */
+static void state_map_add( state_map_t *map, const state_t *state, const int value )
+{
+  int64_t idx;
+  if( map->avail_entries == 0 ) {
+    int64_t i;
+    state_map_entry_t *old_entries;
+    i = map->max_entry;
+    map->max_entry = map->max_entry * 2 + 1;
+    map->avail_entries = (float)map->max_entry * 0.75;
+    old_entries = map->entries;
+    map->entries = (state_map_entry_t *)malloc( sizeof( map->entries[ 0 ] )
+						* ( map->max_entry + 1 ) );
+    assert( map->entries != 0 );
+    for( idx = 0; idx <= map->max_entry; ++idx ) {
+      map->entries[ idx ].state.vars[ 0 ] = -1;
+    }
+    while( 1 ) {
+      if( old_entries[ i ].state.vars[ 0 ] >= 0 ) {
+	state_map_add( map, &old_entries[ i ].state, old_entries[ i ].value );
+      }
+      if( i == 0 ) { break; }
+      --i;
+    }
+    free( old_entries );
+  }
+  idx = state_map_hash_state( map, state );
+  if( map->entries[ idx ].state.vars[ 0 ] < 0 ) {
+    copy_state( &map->entries[ idx ].state, state );
+    --map->avail_entries;
+  }
+  map->entries[ idx ].value = value;
+}
+
+/* returns NULL if state is not in map
+   returns a pointer to the value if state is in the map */
+static int *state_map_get( const state_map_t *map, const state_t *state )
+{
+  uint64_t idx = state_map_hash_state( map, state );
+  if( map->entries[ idx ].state.vars[ 0 ] < 0 ) {
+    return 0;
+  }
+  return &map->entries[ idx ].value;
+}
+
+static void write_state_map( FILE *file, const state_map_t *map )
+{
+  size_t written;
+  written = fwrite( &map->max_entry, sizeof( map->max_entry ), 1, file );
+  assert( written == 1 );
+  written = fwrite( &map->avail_entries,
+		    sizeof( map->avail_entries ), 1, file );
+  assert( written == 1 );
+  written = fwrite( map->entries, sizeof( map->entries[ 0 ] ),
+		    map->max_entry + 1, file );
+  assert( written == (size_t)map->max_entry + 1 );
+}
+
+static state_map_t *read_state_map( FILE *file )
+{
+  int64_t max_entry;
+  state_map_t *map;
+  size_t read_in;
+  read_in = fread( &max_entry, sizeof( max_entry ), 1, file );
+  assert( read_in == 1 );
+  map = (state_map_t *)malloc( sizeof( *map ) );
+  assert( map != NULL );
+  map->max_entry = max_entry;
+  map->entries = (state_map_entry_t *)
+    malloc( sizeof( map->entries[ 0 ] ) * ( map->max_entry + 1 ) );
+  assert( map->entries != NULL );
+  read_in = fread( &map->avail_entries, sizeof( map->avail_entries ), 1, file );
+  assert( read_in == 1 );
+  read_in = fread( map->entries, sizeof( map->entries[ 0 ] ),
+		   map->max_entry + 1, file );
+  assert( read_in == (size_t)map->max_entry + 1 );
+  return map;
+}
+
+
+/*
+Copyright (C) 2011, 2014 by the PSVN Research Group, University of Alberta
+*/
+
+typedef struct {
+  int size;
+  var_t *v;
+} abst_array_t;
+
+typedef struct {
+  var_t *value_map[ NUMDOMAINS ];
+  uint8_t project_away_var[ NUMVARS ];
+  abst_array_t* mapped_in[ NUMDOMAINS ];
+  int* fwd_rule_label_sets;
+  int* bwd_rule_label_sets;
+} abstraction_t;
+
+
+static abstraction_t* allocate_abstraction()
+{
+    int i;
+    int64_t s;
+    abstraction_t* abst = (abstraction_t *)malloc( sizeof( *abst ) );
+    if( abst == NULL )
+        return NULL;
+    
+    for( s = 0, i = 0; i < NUMDOMAINS; ++i ) {
+        s += domain_sizes[ i ];
+    }
+    abst->value_map[ 0 ]
+        = (var_t * )malloc( sizeof( abst->value_map[ 0 ][ 0 ] ) * s );
+    if( abst->value_map[ 0 ] == NULL ) {
+        free( abst );
+        return NULL;
+    }
+    abst->mapped_in[ 0 ] 
+        = (abst_array_t*)malloc(sizeof(abst->mapped_in[0][0]) * s);
+    if (abst->mapped_in[ 0 ] == NULL) {
+        free(abst->value_map[0]);
+        free(abst);
+        return NULL;
+    }
+    for( s = domain_sizes[ 0 ], i = 1;
+         i < NUMDOMAINS;
+         s += domain_sizes[ i ], ++i ) 
+    {
+        abst->value_map[ i ] = &abst->value_map[ 0 ][ s ];
+        abst->mapped_in[ i ] = &abst->mapped_in[ 0 ][ s ];
+    }
+
+    for (i = 0; i < NUMDOMAINS; ++i){
+        abst->mapped_in[ i ][ 0 ].v 
+            = (var_t*) malloc (sizeof(var_t) * domain_sizes[i]);
+    }
+
+    return abst;
+}
+
+
+static void destroy_abstraction( abstraction_t *abst )
+{
+    int i;
+    for (i = 0; i < NUMDOMAINS; ++i)
+        free ( abst->mapped_in[i][0].v );
+    free( abst->mapped_in[ 0 ] );
+    free( abst->value_map[ 0 ] );
+    free( abst );
+}
+
+
+
+/* Fills in an abstraction's mapped_in array.
+   Required for use in a dyanmic abstraction setting. Overwrites old
+   mapped_in array. */
+static void abstraction_compute_mapped_in(abstraction_t* abst)
+{
+    int i, j, k, n;
+    int found[128];
+    size_t size;
+    for( i = 0; i < NUMDOMAINS; ++i ) {
+        var_t* in = abst->mapped_in[i][0].v;
+        for (j = 0; j < domain_sizes[i]; ++j) {
+            abst->mapped_in[i][j].size = 0;
+            abst->mapped_in[i][j].v = in;
+            for (k = 0; k < domain_sizes[i]; ++k) {
+                if (abst->value_map[i][k] == j) {
+                    abst->mapped_in[i][j].size++;
+                    *in++ = k;
+                }
+            }
+        }
+    }
+
+    /* Compute the representative for variable equality comparisions.
+       Suppose the LHS of a rule looks like "- A A A". The compiler
+       will add the tests "var[2] == var[1]" and "var[3] ==
+       var[1]". But what happens if var[1] is projected away? We need
+       to compute the new representative of 'A' (which the compiler
+       set to var[1] initially), by finding another A that isn't
+       projected away, and use it for the comparison tests. */
+    size = NUMVARS * num_fwd_rules * sizeof(int);
+    abst->fwd_rule_label_sets = (int*) malloc (size);
+    memcpy(abst->fwd_rule_label_sets, fwd_rule_label_sets, size);
+    for (i = 0; i < num_fwd_rules; ++i) {
+        for (j = 0; j < NUMVARS; ++j) {
+            if (abst->project_away_var[j]) {
+                n = 0;
+                for (k = j + 1; k < NUMVARS; ++k)
+                    if (!abst->project_away_var[k] 
+                        && fwd_rule_label_sets[i*NUMVARS + k] == j)
+                        found[n++] = k;
+                /* Map others to new representative. */
+                if (n > 0) {
+                    abst->fwd_rule_label_sets[i*NUMVARS + j] = found[0];
+                    for (k = 0; k < n; ++k)
+                        abst->fwd_rule_label_sets[i*NUMVARS + found[k]] = found[0];
+                }
+            }
+        }
+    }
+#ifdef HAVE_BWD_MOVES
+    /* Do the same for the backwards rules */
+    size = NUMVARS *  num_bwd_rules * sizeof(int);
+    abst->bwd_rule_label_sets = (int*) malloc (size);
+    memcpy(abst->bwd_rule_label_sets, bwd_rule_label_sets, size);
+    for (i = 0; i < num_bwd_rules; ++i) {
+        for (j = 0; j < NUMVARS; ++j) {
+            if (abst->project_away_var[j]) {
+                n = 0;
+                for (k = j + 1; k < NUMVARS; ++k)
+                    if (!abst->project_away_var[k] 
+                        && bwd_rule_label_sets[i*NUMVARS + k] == j)
+                        found[n++] = k;
+                if (n > 0) {
+                    abst->bwd_rule_label_sets[i*NUMVARS + j] = found[0];
+                    for (k = 0; k < n; ++k)
+                        abst->bwd_rule_label_sets[i*NUMVARS + found[k]] = found[0];
+                }
+            }
+        }
+    }
+#endif
+}
+
+
+static abstraction_t* create_identity_abstraction()
+{
+    int i, j;
+    abstraction_t* abst = allocate_abstraction();
+    if (abst == NULL)
+        return NULL;
+
+    for( i = 0; i < NUMDOMAINS; ++i )
+        for( j = 0; j < domain_sizes[ i ]; ++j )
+            abst->value_map[ i ][ j ] = j;
+    abstraction_compute_mapped_in( abst );
+
+    for( i = 0; i < NUMVARS; ++i )
+        abst->project_away_var[ i ] = 0;
+
+    return abst;
+}
+
+
+/* Reads abstraction from stream between closing curly braces.
+   Assumes abstraction starts as the identity map. Only domains
+   you want to change need to specified. */
+static abstraction_t *read_abstraction_from_stream( FILE* stream )
+{
+    int i, k;
+    var_t j;
+    char token[1024];
+    abstraction_t *abst = create_identity_abstraction();
+    if (!abst)
+        return NULL;
+
+    if (!fscanf(stream, " %s", token) || token[0] != '{') {
+        fprintf(stderr, "Missing opening '{'!\n");
+        destroy_abstraction( abst );
+        return NULL;
+    }
+
+    while (!feof(stream)) {
+        if (!fscanf(stream, " %s ", token)) {
+            fprintf(stderr, "Expected more input!\n");
+            destroy_abstraction( abst );
+            return NULL;
+        }
+        if (token[0] == '}')
+            break;
+        else if (!strcasecmp(token, "projection")) 
+        {
+            if (!fscanf(stream, " %s", token) || token[0] != '{') {
+                fprintf(stderr, "Missing opening '{' for projection.\n");
+                destroy_abstraction( abst );
+                return NULL;
+            }
+
+            /* set the projection mapping */
+            for( i = 0; i < NUMVARS; ++i ) {
+                if(!fscanf(stream, " %s", token ) ) {
+                    destroy_abstraction( abst );
+                    fclose(stream);
+                    return NULL;
+                }
+                if( token[0] == 'p' || token[0] == 'P' ) {
+                    abst->project_away_var[ i ] = 1;
+                } else if (token[0] == 'k' || token[0] == 'K') {
+                    abst->project_away_var[ i ] = 0;
+                } else {
+                    fprintf(stderr, "Bad projection value: '%s'\n", token);
+                    destroy_abstraction( abst );
+                    return NULL;
+                }
+            }
+            if (!fscanf(stream, " %s", token) || token[0] != '}') {
+                fprintf(stderr, "Missing closing '}' after projection\n");
+                destroy_abstraction( abst );
+                return NULL;
+            }
+
+        } else {
+
+            /* find domain */
+            for (i = 0; i < NUMDOMAINS; ++i) {
+                if (!strcasecmp(token, name_of_domain[i]))
+                    break;
+            }
+            if (i == NUMDOMAINS) {
+                fprintf(stderr, "Bad domain name! '%s'\n", token);
+                destroy_abstraction( abst );
+                return NULL;
+            }
+
+            if (!fscanf(stream, " %s", token) || token[0] != '{') {
+                fprintf(stderr, "Missing opening '{' for domain mapping.\n");
+                destroy_abstraction( abst );
+                return NULL;
+            }
+
+            /* read domain mapping */
+            for (j = 0; j < domain_sizes[ i ]; ++j) {
+                if (!fscanf(stream, " %s", token)) {
+                    fprintf(stderr, "Missing domain value!\n");
+                    destroy_abstraction( abst );
+                    return NULL;
+                }
+                for (k = 0; k < domain_sizes[i]; ++k) {
+                    if (!strcasecmp(domain_to_domain_names[i][k], token))
+                        break;
+                }
+                if (k == domain_sizes[i]) {
+                    fprintf(stderr, "Bad domain value! '%s'\n", token);
+                    destroy_abstraction( abst );
+                    return NULL;
+                }
+                abst->value_map[i][j] = k;
+            }
+
+            if (!fscanf(stream, " %s", token) || token[0] != '}') {
+                fprintf(stderr, "Missing closing '}' after domain mapping\n");
+                destroy_abstraction( abst );
+                return NULL;
+            }
+        }
+    }
+
+    return abst;
+}
+
+
+/* Reads an abstraction from a file.
+   Returns the abstraction on success, or NULL on failure */
+static abstraction_t *read_abstraction_from_file( const char *filename )
+{
+    char token[1024];
+    FILE *file;
+    file = fopen( filename, "r" );
+    if( file == NULL )
+        return NULL;
+
+    if (!fscanf(file, "%s", token) || strcasecmp(token, "abstraction") ) {
+        fprintf(stderr, "Missing opening \"abstraction\" token!\n");
+        return NULL;
+    }
+    abstraction_t* abst = read_abstraction_from_stream( file );
+    fclose( file );
+    return abst;
+}
+
+
+static void print_abstraction( const abstraction_t* abst )
+{
+    int i, j;
+    printf("abstraction {\n");
+    for( i = 0; i < NUMDOMAINS; ++i ) {
+        printf("  %s {", name_of_domain[ i ]);
+        for( j = 0; j < domain_sizes[ i ]; ++j ) {
+            printf(" ");
+            printf("%s", domain_to_domain_names[i][ abst->value_map[i][j] ]);
+        }
+        printf(" }  \n");
+    }
+    printf("  projection {");
+    for (i = 0; i < NUMVARS; ++i) {
+        printf(" %c", (abst->project_away_var[i] ? 'P' : 'K'));
+    }
+    printf(" }\n}\n");
+}
+
+
+/* compute abstraction of state and store in abst_state */
+static void abstract_state( const abstraction_t *abst, const state_t *state,
+                            state_t* abst_state)
+{
+    int i;
+    for( i = 0; i < NUMVARS; ++i ) {
+        if( abst->project_away_var[ i ] ) {
+            abst_state->vars[ i ] = 0;
+        } else {
+            abst_state->vars[ i ]
+                = abst->value_map[ var_domains[ i ] ][ state->vars[ i ] ];
+        }
+    }
+}

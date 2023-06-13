@@ -1,5 +1,7 @@
 #include "psvn.hpp"
 
+#include <limits.h>
+
 #include <iostream>
 #include <queue>
 #include <unordered_map>
@@ -49,7 +51,7 @@ vector<pair<state_t *, Action>> *successors(state_t *state) {
     }
     child_hist = nextFwdHistory(hist, ruleid);
     applyFwdRule(ruleid, state, child);
-    //  oprint_state(child);
+    oprint_state(child);
     //     move_cost = get_fwd_rule_cost(ruleid);
     successors_list->push_back(make_pair(child, ruleid));
   }
@@ -75,15 +77,21 @@ int get_color(state_t *state, unordered_map<string, int> &visited) {
   return visited[string(str_state)];
 }
 
-void set_distance(state_t *state, int distance,
-                  unordered_map<string, int> &cost_so_far) {
+void set_distance(state_t *state, unsigned distance,
+                  unordered_map<string, unsigned> &cost_so_far) {
   char *str_state = new char[1024];
   sprintState(str_state, 1024, state);
   cost_so_far[string(str_state)] = distance;
 }
 
-int get_distance(state_t *state, unordered_map<string, int> &cost_so_far) {
+unsigned get_distance(state_t *state,
+                      unordered_map<string, unsigned> &cost_so_far) {
   char *str_state = new char[1024];
   sprintState(str_state, 1024, state);
-  return cost_so_far[string(str_state)];
+  // detect if the state is not in the map
+  if (cost_so_far.find(string(str_state)) == cost_so_far.end()) {
+    return UINT_MAX;
+  }
+  unsigned r = cost_so_far[string(str_state)];
+  return r;
 }

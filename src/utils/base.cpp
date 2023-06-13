@@ -26,3 +26,18 @@ int nextFwdHistory(int history, int ruleid) {
 }
 
 int getFwdRuleCost(int ruleid) { return get_fwd_rule_cost(ruleid); }
+
+abstraction_t *readAbstractionFromFile(const char *filename) {
+  return read_abstraction_from_file(filename);
+}
+
+state_map_t *readStateMap(FILE *file) { return read_state_map(file); }
+
+void abstractState(const abstraction_t *abst, const state_t *state,
+                   state_t *abst_state) {
+  abstract_state(abst, state, abst_state);
+}
+
+int *stateMapGet(const state_map_t *map, const state_t *state) {
+  return state_map_get(map, state);
+}

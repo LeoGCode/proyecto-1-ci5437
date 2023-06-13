@@ -18,5 +18,7 @@ add_executable( proyec1AI1
         src/search_algorithms/astar/astar.cpp 
         src/search_algorithms/idastar/idastar.cpp 
         src/problems/n-puzzle/heuristics/manhattan.cpp
+        src/utils/heuristic.cpp
+        src/utils/heuristic.hpp
         )
 

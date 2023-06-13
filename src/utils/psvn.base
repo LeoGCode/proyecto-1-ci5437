@@ -77,8 +77,9 @@ int COLOR(char c);
 
 void set_color(state_t *state, int color, unordered_map<string, int> &visited);
 int get_color(state_t *state, unordered_map<string, int> &visited);
-void set_distance(state_t *state, int distance,
-                  unordered_map<string, int> &cost_so_far);
-int get_distance(state_t *state, unordered_map<string, int> &cost_so_far);
+void set_distance(state_t *state, unsigned distance,
+                  unordered_map<string, unsigned> &cost_so_far);
+unsigned get_distance(state_t *state,
+                      unordered_map<string, unsigned> &cost_so_far);
 
 #endif  // PSVN_H

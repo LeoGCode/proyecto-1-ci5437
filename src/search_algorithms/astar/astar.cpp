@@ -17,10 +17,9 @@ using namespace std;
 Node *astar_search(state_t *initial_state, heuristic_t heuristic,
                    atomic<int> *num_generated_states,
                    atomic<int> *num_expanded_states) {
-  unordered_map<string, int> cost_so_far;  // visited,
+  unordered_map<string, unsigned> cost_so_far;  // visited,
   priority_queue<pair<int, Node *>> q;
   // set_color(initial_state, GRAY, visited);
-  set_distance(initial_state, 0, cost_so_far);
   Node *root = make_root_node(initial_state);
   q.push(make_pair(heuristic(initial_state), root));
   while (!q.empty()) {

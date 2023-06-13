@@ -14,6 +14,7 @@
 // #include "src/utils/psvn.hpp"
 
 #include "src/problems/n-puzzle/heuristics/manhattan.hpp"
+#include "src/utils/heuristic.hpp"
 
 void print_help(char *argv0) {
   cout << "Usage: " << argv0 << " <algorithm> <instance> <timeout> [heuristic]"
@@ -110,7 +111,7 @@ void wait_timeout(int timeout) {
 }
 
 int main(int argc, char *argv[]) {
-    main_program(argc, argv);
+  main_program(argc, argv);
 
   // launch the main program in a separate thread
   thread t1(main_program, argc, argv);

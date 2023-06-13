@@ -5,6 +5,9 @@ if "__main__" == __name__:
     root_dir = 'src'
 
     for subdir, dirs, files in os.walk(root_dir):
+        # ignore the abstraction folder
+        if 'abstractions' in subdir:
+            continue
         for file in files:
             if file.endswith('.psvn'):
                 file_path = os.path.join(subdir, file)
@@ -16,9 +19,9 @@ if "__main__" == __name__:
                     shutil.move(file_path, os.path.join(new_dir, file))
 
     PSVN_COMPILER_PATH = 'psvn/psvn2c'
-    PSVNOPT = '--no_state_map --no_abstraction --no_backwards_moves --history_len='
+    PSVNOPT = '--no_backwards_moves --history_len='
     PSVN_NAME = '--name='
-    PSVN_HISTORY_LEN = [0, 1, 2]
+    PSVN_HISTORY_LEN = [0, 1]
     BASE_FILE_PATH = 'src/utils/base.cpp'
 
     # copy core for psvn folder
@@ -26,6 +29,9 @@ if "__main__" == __name__:
 
     # now we generate all the c files with the psvn2c compiler
     for subdir, dirs, files in os.walk(root_dir):
+        # ignore the abstraction folder
+        if 'abstractions' in subdir:
+            continue
         for file in files:
             if file.endswith('.psvn'):
                 file_path = os.path.join(subdir, file)

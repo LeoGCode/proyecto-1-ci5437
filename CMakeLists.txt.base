@@ -15,5 +15,8 @@ add_executable( name
         src/utils/psvn.cpp
         src/utils/psvn.hpp
         problem.cpp
+        src/search_algorithms/astar/astar.cpp 
+        src/search_algorithms/idastar/idastar.cpp
+        src/problems/n-puzzle/heuristics/manhattan.cpp
   )
 

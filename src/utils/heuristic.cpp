@@ -44,7 +44,7 @@ int getHeuristic( state_t state, std::string problem ){
             "src/abstractions/hanoi/4-12/hanoi4-12_group_2",
         };
 
-        return heuristic( state, pdbs, 1 );
+        return heuristic( state, pdbs, 0 );
     }
     else if (problem.compare("hanoi4-14") == 0)
     {
@@ -53,7 +53,7 @@ int getHeuristic( state_t state, std::string problem ){
             "src/abstractions/hanoi/4-14/hanoi4-14_group_2",
         };
 
-        return heuristic( state, pdbs, 1 );
+        return heuristic( state, pdbs, 0 );
     }
     else if (problem.compare("hanoi4-18") == 0)
     {
@@ -62,7 +62,7 @@ int getHeuristic( state_t state, std::string problem ){
             "src/abstractions/hanoi/4-18/hanoi4-18_group_2",
         };
 
-        return heuristic( state, pdbs, 1 );
+        return heuristic( state, pdbs, 0 );
     }
     else if (problem.compare("15-puzzle") == 0)
     {
@@ -72,7 +72,7 @@ int getHeuristic( state_t state, std::string problem ){
             "src/abstractions/n-puzzle/15-puzzle/15-puzzle_group_3",
         };
 
-        return heuristic( state, pdbs, 0 );
+        return heuristic( state, pdbs, 1 );
     }
     else if (problem.compare("24-puzzle") == 0)
     {
@@ -83,7 +83,7 @@ int getHeuristic( state_t state, std::string problem ){
             "src/abstractions/n-puzzle/24-puzzle/24-puzzle_group_4",
         };
 
-        return heuristic( state, pdbs, 0 );
+        return heuristic( state, pdbs, 1 );
     }
     else if (problem.compare("rubik") == 0)
     {
@@ -98,7 +98,7 @@ int getHeuristic( state_t state, std::string problem ){
             "src/abstractions/rubik/3x3/rubik_edge_4",
         };
 
-        return heuristic( state, pdbs, 1 );
+        return heuristic( state, pdbs, 0 );
     }
     else if (problem.compare("topSpin12-4") == 0)
     {
@@ -107,7 +107,7 @@ int getHeuristic( state_t state, std::string problem ){
             "src/abstractions/topSpin/12-4/topspin_12_4_group_2.txt",
         };
 
-        return heuristic( state, pdbs, 1 );
+        return heuristic( state, pdbs, 0 );
     }
     else if (problem.compare("topSpin14-4") == 0)
     {
@@ -116,7 +116,7 @@ int getHeuristic( state_t state, std::string problem ){
             "src/abstractions/topSpin/14-4/topspin_14_4_group_2.txt",
         };
 
-        return heuristic( state, pdbs, 1 );
+        return heuristic( state, pdbs, 0 );
     }
     else if (problem.compare("topSpin17-4") == 0)
     {
@@ -126,7 +126,7 @@ int getHeuristic( state_t state, std::string problem ){
             "src/abstractions/topSpin/17-4/topspin_17_4_group_3.txt",
         };
 
-        return heuristic( state, pdbs, 1 );
+        return heuristic( state, pdbs, 0 );
     }
     
     return -1;    

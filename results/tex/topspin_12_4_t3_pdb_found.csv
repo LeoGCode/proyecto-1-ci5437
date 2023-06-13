@@ -1,0 +1,6 @@
+pruning,topspin_12_4_h2,topspin_12_4_h2,topspin_12_4_h1,topspin_12_4_h1,topspin_12_4_h0,topspin_12_4_h0
+algorithm,astar,idastart,astar,idastart,astar,idastart
+count,50,50,50,50,50,50
+unique,1,1,1,1,1,1
+top,False,False,False,False,False,False
+freq,50,50,50,50,50,50

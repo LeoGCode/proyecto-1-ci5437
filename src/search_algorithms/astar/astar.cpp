@@ -18,7 +18,9 @@ Node *astar_search(state_t *initial_state, heuristic_t heuristic,
                    atomic<int> *num_generated_states,
                    atomic<int> *num_expanded_states) {
   unordered_map<string, unsigned> cost_so_far;  // visited,
-  priority_queue<pair<int, Node *>> q;
+  priority_queue<pair<int, Node *>, vector<pair<int, Node *>>,
+                 greater<pair<int, Node *>>>
+      q;
   // set_color(initial_state, GRAY, visited);
   Node *root = make_root_node(initial_state);
   q.push(make_pair(heuristic(initial_state), root));

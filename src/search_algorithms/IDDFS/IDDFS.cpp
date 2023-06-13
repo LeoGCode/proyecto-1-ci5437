@@ -1,3 +1,5 @@
+#include <limits.h>
+
 #include <atomic>
 #include <iostream>
 
@@ -15,7 +17,7 @@ pair<Node *, unsigned> bounded_dfs_visit(Node *n, unsigned d, unsigned bound,
     cout << "Solution found!" << endl;
     return make_pair(n, bound);
   }
-  unsigned t = UINT64_MAX;
+  unsigned t = UINT_MAX;
   vector<pair<state_t *, Action>> *successors_list = successors(n->state);
   num_expanded_states->fetch_add(1);
   for (auto successor : *successors_list) {

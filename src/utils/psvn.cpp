@@ -51,7 +51,7 @@ vector<pair<state_t *, Action>> *successors(state_t *state) {
     }
     child_hist = nextFwdHistory(hist, ruleid);
     applyFwdRule(ruleid, state, child);
-    oprint_state(child);
+    // oprint_state(child);
     //     move_cost = get_fwd_rule_cost(ruleid);
     successors_list->push_back(make_pair(child, ruleid));
   }
@@ -63,6 +63,7 @@ int COLOR(char c) {
   if (c == 'w') return 0;
   if (c == 'g') return 1;
   if (c == 'b') return 2;
+  return -1;
 }
 
 void set_color(state_t *state, int color, unordered_map<string, int> &visited) {

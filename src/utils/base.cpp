@@ -25,8 +25,6 @@ int nextFwdHistory(int history, int ruleid) {
   return next_fwd_history(history, ruleid);
 }
 
-int getFwdRuleCost(int ruleid) { return get_fwd_rule_cost(ruleid); }
-
 abstraction_t *readAbstractionFromFile(const char *filename) {
   return read_abstraction_from_file(filename);
 }

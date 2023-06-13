@@ -12,6 +12,7 @@
 using namespace std;
 
 #define NUMVARS num_states_vars
+#define NUMDOMAINS 1
 
 typedef int8_t var_t;
 typedef struct {
@@ -24,6 +25,29 @@ typedef struct {
   const state_t *my_state;
   funcptr my_funcptr;
 } ruleid_iterator_t;
+typedef struct {
+  int size;
+  var_t *v;
+} abst_array_t;
+
+typedef struct {
+  var_t *value_map[NUMDOMAINS];
+  uint8_t project_away_var[NUMVARS];
+  abst_array_t *mapped_in[NUMDOMAINS];
+  int *fwd_rule_label_sets;
+  int *bwd_rule_label_sets;
+} abstraction_t;
+
+typedef struct {
+  state_t state;
+  int value;
+} state_map_entry_t;
+
+typedef struct {
+  state_map_entry_t *entries;
+  int64_t avail_entries;
+  int64_t max_entry;
+} state_map_t;
 
 // void init_fwd_iter(ruleid_iterator_t *iter, state_t *state);
 // int next_ruleid(ruleid_iterator_t *iter);
@@ -41,7 +65,7 @@ int getFwdRuleCost(int ruleid);
 int isGoal(state_t *state);
 int getFwdRuleCost(int ruleid);
 
-static ssize_t sprintState(char *string, const size_t max_len,
+ssize_t sprintState(char *string, const size_t max_len,
                            const state_t *state_ptr);
 ssize_t readState(const char *string, state_t *state_ptr);
 
@@ -81,5 +105,14 @@ void set_distance(state_t *state, unsigned distance,
                   unordered_map<string, unsigned> &cost_so_far);
 unsigned get_distance(state_t *state,
                       unordered_map<string, unsigned> &cost_so_far);
+
+abstraction_t *readAbstractionFromFile(const char *filename);
+
+state_map_t *readStateMap(FILE *file);
+
+void abstractState(const abstraction_t *abst, const state_t *state,
+                   state_t *abst_state);
+
+int *stateMapGet(const state_map_t *map, const state_t *state);
 
 #endif  // PSVN_H

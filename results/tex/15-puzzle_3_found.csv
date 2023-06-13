@@ -1,0 +1,6 @@
+pruning,15-puzzle_h2,15-puzzle_h2,15-puzzle_h0,15-puzzle_h0,15-puzzle_h1,15-puzzle_h1
+algorithm,bfs,iddfs,bfs,iddfs,bfs,iddfs
+count,100,100,100,100,100,100
+unique,1,1,1,1,1,1
+top,False,False,False,False,False,False
+freq,100,100,100,100,100,100

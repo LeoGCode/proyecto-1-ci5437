@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 project(name)
 
-set(CMAKE_CXX_STANDARD 17 -pthread -O3)
+set(CMAKE_CXX_STANDARD 17 -pthread -g)
 
 add_executable( name
         main.cpp
@@ -18,5 +18,7 @@ add_executable( name
         src/search_algorithms/astar/astar.cpp 
         src/search_algorithms/idastar/idastar.cpp
         src/problems/n-puzzle/heuristics/manhattan.cpp
+        src/utils/heuristic.cpp
+        
   )
 

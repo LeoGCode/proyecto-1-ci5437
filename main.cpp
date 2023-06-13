@@ -17,19 +17,25 @@
 #include "src/utils/heuristic.hpp"
 
 void print_help(char *argv0) {
-  cout << "Usage: " << argv0 << " <algorithm> <instance> <timeout> [heuristic]"
+  cout << "Usage: " << argv0
+       << " <algorithm> <instance> <timeout> [problem_name] [heuristic]"
        << endl;
   cout << "  <algorithm> = {bfs, dfs, iddfs, astar, idastar}" << endl;
   cout << "  <instance> = vector of length corresponding to the problem"
        << endl;
   cout << "  <timeout> = timeout in seconds" << endl;
-  cout << "  [heuristic] = {manhattan} (required for astar and idastar)"
+  cout << "  [problem_name] = {15-puzzle, 24-puzzle, rubik3, "
+          "topspin_<12,14,17>_4, hanoi4_<12,14,18>} (required for astar and "
+          "idastar)"
+       << endl;
+  cout << "  [heuristic] = {manhattan, pdb} (required for astar and idastar)"
        << endl;
   cout << "  the heuristic must match the problem" << endl;
 }
 
 void print_short_help(char *argv0) {
-  cout << "Usage: " << argv0 << " <algorithm> <instance> <timeout> [heuristic]"
+  cout << "Usage: " << argv0
+       << " <algorithm> <instance> <timeout> [problem_name] [heuristic]"
        << endl;
   cout << "Please, use -h or --help for more information." << endl;
 }
@@ -42,12 +48,14 @@ atomic<bool> main_finished(false);
 atomic<bool> timeout_reached(false);
 
 heuristic_t check_heuristic(int argc, char *argv[], char const *heuristic) {
-  if (argc != 5) {
+  if (argc != 6) {
     print_short_help(argv[0]);
     return NULL;
   }
   if (strcmp(heuristic, "manhattan") == 0) {
     return manhattan;
+  } else if (strcmp(heuristic, "pdb") == 0) {
+    return getHeuristic(argv[4]);
   } else {
     cout << "Heuristic not implemented." << endl;
     cout << "Please, use -h or --help for more information." << endl;
@@ -83,7 +91,7 @@ int main_program(int argc, char *argv[]) {
     iterative_deepening_depth_first_search(initial_state, &num_generated_states,
                                            &num_expanded_states);
   } else if (strcmp(algorithm, "astar") == 0) {
-    heuristic_t heuristic = check_heuristic(argc, argv, argv[4]);
+    heuristic_t heuristic = check_heuristic(argc, argv, argv[5]);
     if (heuristic == NULL) {
       return 0;
     }
@@ -111,7 +119,7 @@ void wait_timeout(int timeout) {
 }
 
 int main(int argc, char *argv[]) {
-  main_program(argc, argv);
+  // main_program(argc, argv);
 
   // launch the main program in a separate thread
   thread t1(main_program, argc, argv);

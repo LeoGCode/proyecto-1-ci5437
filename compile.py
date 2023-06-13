@@ -15,10 +15,13 @@ if "__main__" == __name__:
     # the placeholder are 'name', 'problem.c' and 'problem.cpp'
 
     for subdir, dirs, files in os.walk(root_dir):
+        # ignore the abstraction folder
+        if 'abstractions' in subdir:
+            continue
         for f in files:
             if f.endswith('.psvn'):
                 problem_name = os.path.splitext(f)[0]
-                for i in range(3):
+                for i in range(2):
                     file_name = f'{problem_name}_h{i}'
                     problem_path = os.path.join(subdir, file_name)
                     shutil.copy(cmake_base, cmake_file)

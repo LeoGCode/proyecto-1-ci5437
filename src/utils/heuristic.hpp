@@ -20,6 +20,6 @@ Problem string posible values:
 - topSpin17-4
 
 */
-int getHeuristic( state_t state, std::string problem )
+int getHeuristic( state_t state, std::string problem );
 
 #endif

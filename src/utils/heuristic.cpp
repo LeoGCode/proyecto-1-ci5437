@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+# include "heuristic.hpp"
 
 int heuristic( state_t state, std::vector<std::string> pdbs, int additive ){
     int pdb_value = -1;

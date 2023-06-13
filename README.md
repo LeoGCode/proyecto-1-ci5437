@@ -1,3 +1,13 @@
+# Introduccion
+
+Proyecto 1 de la Asignatura Inteligencia Artificial I dictada por el profesor Carlos Infante durante 
+el trimestre Abril Julio 2023. Este tiene como finalidad realizar estudios acerca de busquedas en espacios
+de estados mediante heuristicas tanto aditivas como no aditivas.
+
+## Equipo
+- Leonel Guerrero 18-10638
+- Eros Cedeño 16-10216
+
 # Objetivo
 
 El objetivo del proyecto es aprender sobre el modelo de espacio de estados y sobre

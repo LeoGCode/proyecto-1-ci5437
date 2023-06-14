@@ -27,12 +27,14 @@ if __name__ == "__main__":
         # print(data)
         # we group the data by the first index and we calculate the mean
         cols = data.columns.tolist()
-        # rearrange the columns to have f values first, then the g values, e and lastly the t values
+        # rearrange the columns to have f values first, then the g values, e, then d,  and finally the t values
         f_cols = [col for col in cols if 'f' in col]
         g_cols = [col for col in cols if 'g' in col]
         e_cols = [col for col in cols if 'e' in col]
+        d_cols = [col for col in cols if 'd' in col]
         t_cols = [col for col in cols if 't' in col]
-        cols = f_cols + g_cols + e_cols + t_cols
+
+        cols = f_cols + g_cols + e_cols + d_cols + t_cols
         data = data[cols]
         # we print the data
         data_grouped = data.groupby(level=0).mean().T.round(2)

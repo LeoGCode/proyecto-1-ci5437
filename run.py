@@ -6,8 +6,8 @@ import pandas as pd
 import time
 
 root_dir = 'src'
-bin_dir = 'bin copy'
-benchmark_dir = 'benchmarks copy'
+bin_dir = 'bin'
+benchmark_dir = 'benchmarks'
 results_dir = 'results'
 
 if "__main__" == __name__:

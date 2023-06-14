@@ -1,6 +1,0 @@
-pruning,rubik3_h0,rubik3_h0,rubik3_h2,rubik3_h2,rubik3_h1,rubik3_h1
-algorithm,bfs,iddfs,bfs,iddfs,bfs,iddfs
-count,70,70,70,70,70,70
-unique,2,2,2,2,2,2
-top,False,False,False,False,False,False
-freq,60,60,60,60,60,59

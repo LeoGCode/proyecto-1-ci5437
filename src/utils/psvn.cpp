@@ -14,6 +14,7 @@ Node *make_root_node(state_t *state) {
   node->parent = NULL;
   node->action = -1;
   node->g = 0;
+  node->depth = 0;
   return node;
 }
 
@@ -23,6 +24,7 @@ Node *make_node(Node *parent, state_t *state, Action action) {
   node->parent = parent;
   node->action = action;
   node->g = parent->g + getFwdRuleCost(action);
+  node->depth = parent->depth + 1;
   return node;
 }
 
@@ -35,7 +37,15 @@ void oprint_state(state_t *state) {
 vector<pair<state_t *, Action>> *successors(state_t *state) {
   vector<pair<state_t *, Action>> *successors_list =
       new vector<pair<state_t *, Action>>;
+  if (successors_list == NULL) {
+    fprintf(stderr, "out of memory\n");
+    return NULL;
+  }
   ruleid_iterator_t *iter = new ruleid_iterator_t;
+  if (iter == NULL) {
+    fprintf(stderr, "out of memory\n");
+    return NULL;
+  }
   int move_cost, ruleid;
   int hist, child_hist;
   hist = initHistory();
@@ -47,7 +57,7 @@ vector<pair<state_t *, Action>> *successors(state_t *state) {
     state_t *child = (state_t *)(malloc(sizeof(state_t)));
     if (child == NULL) {
       fprintf(stderr, "out of memory\n");
-      exit(-1);
+      return NULL;
     }
     child_hist = nextFwdHistory(hist, ruleid);
     applyFwdRule(ruleid, state, child);

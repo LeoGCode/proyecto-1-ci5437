@@ -20,7 +20,7 @@ if "__main__" == __name__:
 
     print(f'Using threshold {threshold}')
 
-    search_algo = ['astar', 'idastart']
+    search_algo = ['astar', 'idastar']
     dataframes = []
 
     # now we execute each of the binaries with the corresponding benchmark
@@ -33,6 +33,8 @@ if "__main__" == __name__:
         if 'puzzle' not in bin_name:
             continue
         for bin_file in bin_files:
+            if 'h2' in bin_file:
+                continue
             file_dt = pd.DataFrame()
             for benchmark_file in benchmark_files:
                 with open(f'./{benchmark_dir}/{benchmark}/{benchmark_file}', 'r') as f:
@@ -43,13 +45,15 @@ if "__main__" == __name__:
                         algo_dt = pd.DataFrame()
                         for algo in search_algo:
                             # we capture command output
+                            l = line.replace('\n', '')
                             print(
-                                f'./bin/{bin_name}/{bin_file} {algo} {line} {threshold} {bin_name} manhattan')
+                                f'./{bin_dir}/{bin_name}/{bin_file} {algo} {l} {threshold} {bin_name} manhattan')
 
                             output = subprocess.check_output(
-                                [f'./{bin_dir}/{bin_name}/{bin_file}', algo, line, threshold])
+                                [f'./{bin_dir}/{bin_name}/{bin_file}', algo, l, threshold, bin_name, 'manhattan'])
                             # we split the output by new line
                             output = output.decode('utf-8')
+                            print(output)
                             if re.search(r'Solution found!', output):
                                 found = True
                             else:

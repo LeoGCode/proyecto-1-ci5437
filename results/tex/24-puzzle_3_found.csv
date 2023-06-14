@@ -1,6 +1,0 @@
-pruning,24-puzzle_h0,24-puzzle_h0,24-puzzle_h2,24-puzzle_h2,24-puzzle_h1,24-puzzle_h1
-algorithm,bfs,iddfs,bfs,iddfs,bfs,iddfs
-count,50,50,50,50,50,50
-unique,1,1,1,1,1,1
-top,False,False,False,False,False,False
-freq,50,50,50,50,50,50

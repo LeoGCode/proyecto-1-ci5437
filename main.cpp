@@ -1,7 +1,10 @@
+#include <execinfo.h>
 #include <sys/resource.h>
+#include <unistd.h>
 
 #include <atomic>
 #include <chrono>
+#include <csignal>
 #include <cstring>
 #include <iostream>
 #include <thread>
@@ -15,6 +18,33 @@
 
 #include "src/problems/n-puzzle/heuristics/manhattan.hpp"
 #include "src/utils/heuristic.hpp"
+
+atomic<int> num_generated_states;
+atomic<int> num_expanded_states;
+atomic<int> max_depth;
+// flag to indicate if main program has finished
+atomic<bool> main_finished(false);
+// flag to indicate if timeout has been reached
+atomic<bool> timeout_reached(false);
+
+// with capture segmentation fault signal and print the stack trace
+void signal_handler(int signal) {
+  void *array[10];
+  size_t size;
+
+  // get void*'s for all entries on the stack
+  size = backtrace(array, 10);
+
+  // print out all the frames to stderr
+  fprintf(stderr, "Error: signal %d:\n", signal);
+  backtrace_symbols_fd(array, size, STDERR_FILENO);
+
+  cout << "Number of generated states: " << num_generated_states.load() << endl;
+  cout << "Number of expanded states: " << num_expanded_states.load() << endl;
+  cout << "Maximum depth reached: " << max_depth.load() << endl;
+
+  exit(0);
+}
 
 void print_help(char *argv0) {
   cout << "Usage: " << argv0
@@ -39,13 +69,6 @@ void print_short_help(char *argv0) {
        << endl;
   cout << "Please, use -h or --help for more information." << endl;
 }
-
-atomic<int> num_generated_states;
-atomic<int> num_expanded_states;
-// flag to indicate if main program has finished
-atomic<bool> main_finished(false);
-// flag to indicate if timeout has been reached
-atomic<bool> timeout_reached(false);
 
 heuristic_t check_heuristic(int argc, char *argv[], char const *heuristic) {
   if (argc != 6) {
@@ -79,31 +102,31 @@ int main_program(int argc, char *argv[]) {
   // read initial state from stdin
   state_t *initial_state = (state_t *)malloc(sizeof(state_t));
   readState(instance, initial_state);
-  // oprint_state(initial_state);
-
+  oprint_state(initial_state);
+  printf("Algorithm: %s\n", algorithm);
   if (strcmp(algorithm, "bfs") == 0) {
     breadth_first_search(initial_state, &num_generated_states,
-                         &num_expanded_states);
+                         &num_expanded_states, &max_depth);
   } else if (strcmp(algorithm, "dfs") == 0) {
     depth_first_search(initial_state, &num_generated_states,
                        &num_expanded_states);
   } else if (strcmp(algorithm, "iddfs") == 0) {
     iterative_deepening_depth_first_search(initial_state, &num_generated_states,
-                                           &num_expanded_states);
+                                           &num_expanded_states, &max_depth);
   } else if (strcmp(algorithm, "astar") == 0) {
     heuristic_t heuristic = check_heuristic(argc, argv, argv[5]);
     if (heuristic == NULL) {
       return 0;
     }
     astar_search(initial_state, heuristic, &num_generated_states,
-                 &num_expanded_states);
+                 &num_expanded_states, &max_depth);
   } else if (strcmp(algorithm, "idastar") == 0) {
-    heuristic_t heuristic = check_heuristic(argc, argv, argv[4]);
+    heuristic_t heuristic = check_heuristic(argc, argv, argv[5]);
     if (heuristic == NULL) {
       return 0;
     }
     idastar_search(initial_state, heuristic, &num_generated_states,
-                   &num_expanded_states);
+                   &num_expanded_states, &max_depth);
   } else {
     cout << "Algorithm not implemented." << endl;
     cout << "Please, use -h or --help for more information." << endl;
@@ -119,6 +142,13 @@ void wait_timeout(int timeout) {
 }
 
 int main(int argc, char *argv[]) {
+  // register signal SIGSEGV and signal handler
+  signal(SIGABRT, signal_handler);
+  signal(SIGFPE, signal_handler);
+  signal(SIGILL, signal_handler);
+  signal(SIGINT, signal_handler);
+  signal(SIGSEGV, signal_handler);
+  signal(SIGTERM, signal_handler);
   // main_program(argc, argv);
 
   // launch the main program in a separate thread
@@ -147,6 +177,7 @@ int main(int argc, char *argv[]) {
   }
   cout << "Number of generated states: " << num_generated_states.load() << endl;
   cout << "Number of expanded states: " << num_expanded_states.load() << endl;
+  cout << "Maximum depth reached: " << max_depth.load() << endl;
 
   return 0;
 }

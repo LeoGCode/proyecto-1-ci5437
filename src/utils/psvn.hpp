@@ -82,6 +82,8 @@ typedef struct Node {
   struct Node *parent;
   Action action;  // ruleid
   unsigned g;     // cost of partial path
+  int depth;
+
 } Node;
 
 Node *make_root_node(state_t *state);

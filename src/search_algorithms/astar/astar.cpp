@@ -16,7 +16,7 @@ using namespace std;
 
 Node *astar_search(state_t *initial_state, heuristic_t heuristic,
                    atomic<int> *num_generated_states,
-                   atomic<int> *num_expanded_states) {
+                   atomic<int> *num_expanded_states, atomic<int> *max_depth) {
   unordered_map<string, unsigned> cost_so_far;  // visited,
   priority_queue<pair<int, Node *>, vector<pair<int, Node *>>,
                  greater<pair<int, Node *>>>
@@ -31,14 +31,21 @@ Node *astar_search(state_t *initial_state, heuristic_t heuristic,
     if (n->g < get_distance(ns, cost_so_far)) {
       set_distance(ns, n->g, cost_so_far);
       if (isGoal(ns)) {
+        printf("Solution found!\n");
         return n;
       }
       vector<pair<state_t *, Action>> *successors_list = successors(ns);
+      if (successors == nullptr) {
+        cout << "Out of memory" << endl;
+        return nullptr;
+      }
       num_expanded_states->fetch_add(1);
+      // printf("Expanded: %d\n", num_expanded_states->load());
       for (auto successor : *successors_list) {
         if (heuristic(successor.first) < INFINITY) {
           // set_color(successor.first, GRAY, visited);
           Node *child = make_node(n, successor.first, successor.second);
+          (*max_depth) = max(max_depth->load(), child->depth);
           q.push(make_pair(child->g + getFwdRuleCost(successor.second) +
                                heuristic(child->state),
                            child));
